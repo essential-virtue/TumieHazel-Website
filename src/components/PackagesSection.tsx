@@ -59,12 +59,22 @@ const PackagesSection = () => {
                   ))}
                 </ul>
                 <p className="font-body text-xs text-muted-foreground mb-4">Duration: {pkg.duration}</p>
-                <Link to="/book">
+                <Link to="/book"
+                    state={{ 
+                        selectedPackage: pkg.name,
+                        serviceType: pkg.name.includes("Mobile") ? "mobile" : "home"
+                    }}
+                  >
                   <Button className="rounded-full w-full">Book This Package</Button>
                 </Link>
               </CardContent>
             </Card>
           ))}
+        </div>
+        <div className="text-center mt-12">
+          <Link to="/packages" className="font-body text-sm hover:text-gold transition-colors">
+            <Button className="rounded-full">View All Packages &rarr;</Button>
+          </Link>
         </div>
       </div>
     </section>
