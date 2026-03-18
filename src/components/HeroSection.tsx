@@ -22,16 +22,16 @@ const HeroSection = () => {
           Home-Based & Mobile Wellness Therapy designed to help you relax, relieve stress, and restore balance.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: "0.45s" }}>
-          <Link to="/book">
+          <Link to="/services">
             <Button size="lg" className="rounded-full px-8 text-base">
-              Book Appointment
+              Our Services
             </Button>
           </Link>
-          <a href="#services">
+          <Link to="/packages">
             <Button size="lg" variant="outline" className="rounded-full px-8 text-base border-primary-foreground/40 text-primary hover:bg-primary-foreground/10">
-              View Services
+              View Packages
             </Button>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
