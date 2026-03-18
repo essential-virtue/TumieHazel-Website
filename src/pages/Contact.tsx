@@ -41,13 +41,16 @@ const Contact = () => {
       <Navbar />
 
       {/* Header */}
-      <section className="pt-28 pb-12 bg-secondary">
-        <div className="container px-4 text-center">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
+      <section className="pt-28 pb-16 md:pt-36 md:pb-20 bg-secondary">
+        <div className="container px-4 text-center max-w-3xl mx-auto">
+          <p className="font-body text-primary text-sm tracking-[0.2em] uppercase mb-3">
+            A heaven for healing
+          </p>
+          <h1 className="font-heading text-3xl md:text-5xl font-semibold text-foreground mb-5">
             Get In Touch
           </h1>
-          <p className="font-body text-muted-foreground max-w-lg mx-auto">
-            We'd love to hear from you. Reach out to book a session or ask any questions.
+          <p className="font-body text-muted-foreground text-base md:text-lg leading-relaxed">
+            We'd love to hear from you. — Reach out to book a session or ask any questions.
           </p>
         </div>
       </section>
@@ -133,11 +136,15 @@ const Contact = () => {
                   {/* Additional Info */}
                   <div className="mt-8 pt-6 border-t border-border">
                     <p className="font-body text-sm text-muted-foreground">
-                      Prefer to book online? Visit our{' '}
-                      <a href="/book" className="text-primary hover:underline">
-                        booking page
+                      Prefer to book online? Select a{' '}
+                      <a href="/packages" className="text-primary hover:underline">
+                        package
                       </a>
-                      {' '}to schedule your appointment directly.
+                      {' '} or a{' '}
+                      <a href="/services" className="text-primary hover:underline">
+                        service
+                      </a>
+                      {' '} to schedule your appointment directly.
                     </p>
                   </div>
                 </div>
@@ -173,7 +180,10 @@ const Contact = () => {
                 Book your appointment today and experience the best massage therapy in Polokwane.
               </p>
               <Button asChild size="lg" className="rounded-full">
-                <Link to="/book">Book Now</Link>
+                <Link to="/services">View Services</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-full ml-4">
+                <Link to="/packages">View Packages</Link>
               </Button>
             </CardContent>
           </Card>
