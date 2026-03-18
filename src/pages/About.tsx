@@ -137,14 +137,14 @@ const About = () => {
           <p className="font-body text-muted-foreground mb-2">Based in Polokwane, 0609, South Africa</p>
           <p className="font-body text-muted-foreground mb-6">Home-based & mobile services available</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/book">
-              <Button className="rounded-full px-8" size="lg">Book Appointment</Button>
+            <Link to="/packages">
+              <Button className="rounded-full px-8" size="lg">View Packages</Button>
             </Link>
-            <a href="tel:+27729792181">
+            <Link to="/services">
               <Button variant="outline" className="rounded-full px-8" size="lg">
-                <Phone className="w-4 h-4 mr-2" /> Call Us
+                Our Services
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
