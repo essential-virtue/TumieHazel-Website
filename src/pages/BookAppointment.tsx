@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { format } from "date-fns";
 import { CalendarIcon, CheckCircle } from "lucide-react";
 import emailjs from '@emailjs/browser';
@@ -14,14 +14,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
+import { useLocation } from "react-router-dom";
 
 const services = [
-  "Swedish Massage", "Deep Tissue Massage", "Hot Stone Massage",
-  "Facial", "Foot Spa", "Nails", "Waxing", "Cupping Therapy",
+  "Massage Therapy", "Facials", "Foot Spa", "Nails", "Waxing", "Cupping Therapy",
 ];
 
 const packages = [
-  "Stress Reset Package", "Luxury Body Renewal", "Mobile Executive Package",
+  "Stress Reset Package", "Luxury Body Renewal", "Mobile Executive Package", "Kids Massage Package",
 ];
 
 const timeSlots = [
@@ -29,6 +29,7 @@ const timeSlots = [
 ];
 
 const BookAppointment = () => {
+  const location = useLocation();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState<Date>();
@@ -37,7 +38,7 @@ const BookAppointment = () => {
   // Create refs for form inputs
   const formRef = useRef<HTMLFormElement>(null);
   
-  // State for form values (optional - you can also use the refs directly)
+  // State for form values
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -54,6 +55,30 @@ const BookAppointment = () => {
   const serviceId = "service_pc71fbs";
   const templateId = "template_d40z34e";
 
+  // Check for state from navigation (packages or service detail pages)
+  useEffect(() => {
+    if (location.state) {
+      const { selectedPackage, selectedService, serviceType } = location.state as {
+        selectedPackage?: string;
+        selectedService?: string;
+        serviceType?: string;
+      };
+
+      setFormData(prev => ({
+        ...prev,
+        // If a package was selected, set it
+        package: selectedPackage || prev.package,
+        // If a service was selected, set it
+        service: selectedService || prev.service,
+        // Set service type if provided (for mobile packages)
+        serviceType: serviceType || prev.serviceType
+      }));
+
+      // Clear the location state to prevent re-populating on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -68,63 +93,52 @@ const BookAppointment = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
-  setError(null);
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-  try {
-    // Initialize EmailJS with your public key
-    emailjs.init(publicKey);
+    try {
+      // Initialize EmailJS with your public key
+      emailjs.init(publicKey);
 
-    // Prepare template parameters - MATCHING YOUR TEMPLATE VARIABLES
-    const templateParams = {
-      // Client Information section
-      full_name: formData.fullName,           // Matches {{full_name}}
-      phone: formData.phone,                   // Matches {{phone}}
-      email: formData.email,                    // Matches {{email}}
-      
-      // Service Details section
-      service: formData.service,                // Matches {{service}}
-      package: formData.package || 'None selected', // Matches {{package}}
-      
-      // Appointment Details section
-      appointment_date: date ? format(date, "PPP") : 'Not selected', // Matches {{appointment_date}}
-      preferred_time: formData.time,            // Matches {{preferred_time}}
-      service_type: formData.serviceType === 'home' ? 'Home-Based' : 'Mobile Service', // Matches {{service_type}}
-      
-      // Special Requests section
-      special_requests: formData.specialRequests || 'None', // Matches {{special_requests}}
-      
-      // Additional fields
-      submission_time: new Date().toLocaleString(), // Matches {{submission_time}}
-      
-      // Reply-to for when you reply from email
-      reply_to: formData.email,
-    };
+      // Prepare template parameters
+      const templateParams = {
+        full_name: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        service: formData.service,
+        package: formData.package || 'None selected',
+        appointment_date: date ? format(date, "PPP") : 'Not selected',
+        preferred_time: formData.time,
+        service_type: formData.serviceType === 'home' ? 'Home-Based' : 'Mobile Service',
+        special_requests: formData.specialRequests || 'None',
+        submission_time: new Date().toLocaleString(),
+        reply_to: formData.email,
+      };
 
-    console.log('Sending with params:', templateParams); // For debugging
+      console.log('Sending with params:', templateParams);
 
-    // Send email using EmailJS
-    const result = await emailjs.send(
-      serviceId,
-      templateId,
-      templateParams,
-      publicKey
-    );
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        publicKey
+      );
 
-    console.log('Email sent successfully:', result.text);
-    
-    // Show success message
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    
-  } catch (error: any) {
-    console.error('EmailJS Error:', error);
-    setError('Failed to send booking confirmation. Please try again or contact us directly.');
-  } finally {
-    setLoading(false);
-  }
-};
+      console.log('Email sent successfully:', result.text);
+      
+      // Show success message
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      
+    } catch (error: any) {
+      console.error('EmailJS Error:', error);
+      setError('Failed to send booking confirmation. Please try again or contact us directly.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (submitted) {
     return (
@@ -157,6 +171,16 @@ const BookAppointment = () => {
               Book Your Appointment
             </h1>
             <p className="font-body text-muted-foreground">Select your treatment and preferred time.</p>
+            
+            {/* Show what's being booked if coming from package/service */}
+            {(formData.package || formData.service) && (
+              <div className="mt-4 p-3 bg-soft-pink rounded-lg inline-block">
+                <p className="font-body text-sm text-primary">
+                  {formData.package && `Booking: ${formData.package}`}
+                  {formData.service && !formData.package && `Booking: ${formData.service}`}
+                </p>
+              </div>
+            )}
           </div>
 
           <Card className="rounded-2xl border-none shadow-lg">
@@ -212,39 +236,24 @@ const BookAppointment = () => {
                   </div>
                 </div>
 
-                {/* Service */}
-                <div className="space-y-2">
-                  <Label className="font-body" htmlFor="service">Service</Label>
-                  <Select 
-                    onValueChange={(value) => handleSelectChange('service', value)}
-                    value={formData.service}
-                    required
-                  >
-                    <SelectTrigger className="rounded-lg" id="service">
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {services.map((s) => (
-                        <SelectItem key={s} value={s}>{s}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Hidden fields for service and package - still capture data but not visible */}
+                <input type="hidden" name="service" value={formData.service} />
+                <input type="hidden" name="package" value={formData.package} />
 
-                {/* Package */}
-                <div className="space-y-2">
-                  <Label className="font-body" htmlFor="package">Package (Optional)</Label>
-                  <Select onValueChange={(value) => handleSelectChange('package', value)}>
-                    <SelectTrigger className="rounded-lg" id="package">
-                      <SelectValue placeholder="Select a package" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {packages.map((p) => (
-                        <SelectItem key={p} value={p}>{p}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Optional: Show a summary card instead */}
+                {(formData.package || formData.service) && (
+                  <Card className="mb-6 bg-soft-pink/20 border border-primary/20">
+                    <CardContent className="p-4">
+                      <h3 className="font-heading text-sm font-semibold text-foreground mb-2">Your Selection:</h3>
+                      {formData.package && (
+                        <p className="font-body text-sm text-primary">Package: {formData.package}</p>
+                      )}
+                      {formData.service && !formData.package && (
+                        <p className="font-body text-sm text-primary">Service: {formData.service}</p>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Date & Time */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
