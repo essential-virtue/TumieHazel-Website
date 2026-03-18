@@ -173,7 +173,12 @@ const Packages = () => {
                   <p className="font-body text-xs text-muted-foreground mb-4">
                     Duration: {pkg.duration}
                   </p>
-                  <Link to="/book">
+                  <Link to="/book"
+                    state={{ 
+                        selectedPackage: pkg.name,
+                        serviceType: pkg.name.includes("Mobile") ? "mobile" : "home"
+                    }}
+                  >
                     <Button className="rounded-full w-full">Book This Package</Button>
                   </Link>
                 </CardContent>
@@ -256,9 +261,9 @@ const Packages = () => {
             Contact us for a custom quote tailored to your group size and preferences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/book">
+            <Link to="/services">
               <Button className="rounded-full px-8" size="lg">
-                Book a Consultation
+                View Services
               </Button>
             </Link>
             <Link to="/contact">
