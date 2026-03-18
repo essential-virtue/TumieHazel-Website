@@ -10,8 +10,7 @@ import SundaySpecials from "./pages/SundaySpecials";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import ServiceDetail from "./pages/ServiceDetail";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminLogin from "./pages/AdminLogin";
+import Packages from "./pages/Packages";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +26,7 @@ const App = () => (
           <Route path="/book" element={<BookAppointment />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/sunday-specials" element={<SundaySpecials />} />
+          <Route path="/packages" element={<Packages />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
