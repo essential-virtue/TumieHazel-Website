@@ -19,10 +19,12 @@ const Footer = () => {
           <div>
             <h4 className="font-heading text-sm font-semibold text-primary-foreground uppercase tracking-wider mb-4">Quick Links</h4>
             <div className="flex flex-col gap-2">
+              <Link to="/packages" className="font-body text-sm hover:text-gold transition-colors">Our Packages</Link>
               <Link to="/book" className="font-body text-sm hover:text-gold transition-colors">Book Appointment</Link>
               <Link to="/sunday-specials" className="font-body text-sm hover:text-gold transition-colors">Sunday Specials</Link>
               <Link to="/about" className="font-body text-sm hover:text-gold transition-colors">About Us</Link>
               <Link to="/gallery" className="font-body text-sm hover:text-gold transition-colors">Our Gallery</Link>
+              <Link to="/contact" className="font-body text-sm hover:text-gold transition-colors">Contact Us</Link>
             </div>
           </div>
 
