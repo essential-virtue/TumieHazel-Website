@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
   { label: "Packages", href: "/packages" },
   { label: "Sunday Specials", href: "/sunday-specials" },
 ];
@@ -50,8 +50,8 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Link to="/book">
-            <Button className="rounded-full px-6">Book Now</Button>
+          <Link to="/contact">
+            <Button className="rounded-full px-6">Contact Us</Button>
           </Link>
         </div>
 
@@ -79,8 +79,8 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Link to="/book" onClick={() => setOpen(false)}>
-              <Button className="rounded-full w-full mt-2">Book Now</Button>
+            <Link to="/contact" onClick={() => setOpen(false)}>
+              <Button className="rounded-full w-full mt-2">Contact Us</Button>
             </Link>
           </div>
         </div>
