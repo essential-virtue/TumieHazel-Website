@@ -13,16 +13,16 @@ const CTASection = () => {
           Book your wellness session today.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/book">
+          <Link to="/packages">
             <Button size="lg" variant="secondary" className="rounded-full px-8 text-base">
-              Book Appointment
+              View Packages
             </Button>
           </Link>
-          <a href="tel:0729792181">
+          <Link to="/services">
             <Button size="lg" variant="outline" className="rounded-full px-8 text-base border-primary-foreground/40 text-primary hover:bg-primary-foreground/10">
-              <Phone className="w-4 h-4 mr-2" /> Call Now
+              Our Services
             </Button>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
