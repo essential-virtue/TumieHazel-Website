@@ -154,7 +154,7 @@ const ServiceDetail = () => {
       {/* Hero */}
       <section className="pt-28 pb-16 md:pt-36 md:pb-20 bg-secondary">
         <div className="container px-4">
-          <Link to="/#services" className="inline-flex items-center gap-2 text-sm font-body text-muted-foreground hover:text-primary transition-colors mb-8">
+          <Link to="/services" className="inline-flex items-center gap-2 text-sm font-body text-muted-foreground hover:text-primary transition-colors mb-8">
             <ArrowLeft className="w-4 h-4" /> Back to Services
           </Link>
           <div className="flex flex-col md:flex-row items-start gap-6">
@@ -221,7 +221,13 @@ const ServiceDetail = () => {
                     <p className="font-body text-xs text-muted-foreground uppercase tracking-wider mb-1">Price Range</p>
                     <p className="font-heading text-2xl font-semibold text-primary">{service.priceRange}</p>
                   </div>
-                  <Link to="/book" className="block">
+                  <Link to="/book"
+                    state={{ 
+                        selectedService: service.title,
+                        serviceType: service.title.includes("Mobile") ? "mobile" : "home"
+                    }}
+                    className="block"
+                  >
                     <Button className="w-full rounded-full text-base" size="lg">
                       Book This Treatment
                     </Button>
